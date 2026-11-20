@@ -1,0 +1,21 @@
+ITEM_ID,ITEM_NAME,COLOR,SIZE,CLASS_ID,CLASS_NAME,CLASS_DESCRIPTION,DEPARTMENT_ID,DEPARTMENT_NAME,DEPARTMENT_MANAGER_NAME,COMPANY_ID,COMPANY_NAME,COMPANY_TYPE
+50001,Cotton Polo Shirt,Navy,M,1001,Mens Wear,"Shirts, tees and trousers for men",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50002,Slim Fit Chinos,Khaki,32,1001,Mens Wear,"Shirts, tees and trousers for men",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50003,Graphic T-Shirt,Black,L,1001,Mens Wear,"Shirts, tees and trousers for men",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50004,Denim Jacket,Blue,L,1001,Mens Wear,"Shirts, tees and trousers for men",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50005,Embroidered Kurta,Maroon,M,1002,Womens Wear,"Kurtas, tops and jeans for women",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50006,Straight Fit Jeans,Indigo,28,1002,Womens Wear,"Kurtas, tops and jeans for women",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50007,Cotton Top,White,S,1002,Womens Wear,"Kurtas, tops and jeans for women",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50008,Woolen Cardigan,Grey,M,1002,Womens Wear,"Kurtas, tops and jeans for women",101,Apparel,Sita Gurung,1,Himal Retail Pvt Ltd,Retail
+50009,Canvas Sneakers,White,42,1003,Casual Shoes,Everyday sneakers and sandals,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50010,Running Shoes,Black,43,1003,Casual Shoes,Everyday sneakers and sandals,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50011,Leather Sandals,Brown,41,1003,Casual Shoes,Everyday sneakers and sandals,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50012,Slip-On Loafers,Tan,40,1003,Casual Shoes,Everyday sneakers and sandals,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50013,Oxford Shoes,Black,42,1004,Formal Shoes,Office and occasion footwear,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50014,Derby Shoes,Brown,43,1004,Formal Shoes,Office and occasion footwear,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50015,Ankle Boots,Black,39,1004,Formal Shoes,Office and occasion footwear,102,Footwear,Ramesh Thapa,1,Himal Retail Pvt Ltd,Retail
+50016,Travel Backpack,Green,35L,1005,Bags,Backpacks and handbags,103,Accessories,Anita Shrestha,1,Himal Retail Pvt Ltd,Retail
+50017,Laptop Backpack,Grey,25L,1005,Bags,Backpacks and handbags,103,Accessories,Anita Shrestha,1,Himal Retail Pvt Ltd,Retail
+50018,Leather Handbag,Maroon,M,1005,Bags,Backpacks and handbags,103,Accessories,Anita Shrestha,1,Himal Retail Pvt Ltd,Retail
+50019,Analog Wrist Watch,Silver,40mm,1006,Watches,Analog and digital watches,103,Accessories,Anita Shrestha,1,Himal Retail Pvt Ltd,Retail
+50020,Digital Sports Watch,Black,44mm,1006,Watches,Analog and digital watches,103,Accessories,Anita Shrestha,1,Himal Retail Pvt Ltd,Retail

@@ -1,0 +1,49 @@
+DEFECT_NO,BUSINESS_DATE,FILE,FILE_LINE,RECORD,CHANGE,EXPECTED_PIPELINE_OUTCOME
+1,2026-11-13,pos_sales_20261113.csv,51,"TRANSACTION_ID=660018, LINE=4",ITEM_ID blanked (was 50010),Silver ID null check -> REJ_TABLE
+1,2026-11-13,pos_sales_20261113.csv,29,"TRANSACTION_ID=660010, LINE=2",ITEM_ID blanked (was 50005),Silver ID null check -> REJ_TABLE
+2,2026-11-13,pos_sales_20261113.csv,44,"TRANSACTION_ID=660016, LINE=2",SLS_QTY 1 -> -1 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-13,pos_sales_20261113.csv,8,"TRANSACTION_ID=660003, LINE=3",ITEM_ID 50015 -> 59991 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-13,pos_sales_20261113.csv,24 (copy of 27),"TRANSACTION_ID=660009, LINE=2","Row 24 replaced (was TRANSACTION_ID=660008, LINE=3) with exact copy of row 27","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-13,store_master_20261113.csv,4,LOCATION_ID=203,Baseline: district 302/Lalitpur/LTP,First version of store 203 in DIM_LOCATION
+1,2026-11-14,pos_sales_20261114.csv,5,"TRANSACTION_ID=670002, LINE=3",ITEM_ID blanked (was 50007),Silver ID null check -> REJ_TABLE
+1,2026-11-14,pos_sales_20261114.csv,50,"TRANSACTION_ID=670018, LINE=1",ITEM_ID blanked (was 50002),Silver ID null check -> REJ_TABLE
+2,2026-11-14,pos_sales_20261114.csv,14,"TRANSACTION_ID=670005, LINE=1",SLS_QTY 3 -> -3 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-14,pos_sales_20261114.csv,7,"TRANSACTION_ID=670003, LINE=2",ITEM_ID 50013 -> 59992 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-14,pos_sales_20261114.csv,26 (copy of 37),"TRANSACTION_ID=670013, LINE=4","Row 26 replaced (was TRANSACTION_ID=670009, LINE=2) with exact copy of row 37","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-14,store_master_20261114.csv,4,LOCATION_ID=203,District 302/Lalitpur -> 301/Kathmandu,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-15,pos_sales_20261115.csv,35,"TRANSACTION_ID=680016, LINE=2",ITEM_ID blanked (was 50004),Silver ID null check -> REJ_TABLE
+1,2026-11-15,pos_sales_20261115.csv,40,"TRANSACTION_ID=680018, LINE=2",ITEM_ID blanked (was 50004),Silver ID null check -> REJ_TABLE
+2,2026-11-15,pos_sales_20261115.csv,28,"TRANSACTION_ID=680012, LINE=4",SLS_QTY 3 -> -3 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-15,pos_sales_20261115.csv,16,"TRANSACTION_ID=680007, LINE=2",ITEM_ID 50018 -> 59993 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-15,pos_sales_20261115.csv,10 (copy of 11),"TRANSACTION_ID=680004, LINE=4","Row 10 replaced (was TRANSACTION_ID=680004, LINE=3) with exact copy of row 11","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-15,store_master_20261115.csv,4,LOCATION_ID=203,District 301/Kathmandu -> 306/Bhaktapur,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-16,pos_sales_20261116.csv,33,"TRANSACTION_ID=690012, LINE=2",ITEM_ID blanked (was 50019),Silver ID null check -> REJ_TABLE
+1,2026-11-16,pos_sales_20261116.csv,37,"TRANSACTION_ID=690014, LINE=2",ITEM_ID blanked (was 50016),Silver ID null check -> REJ_TABLE
+2,2026-11-16,pos_sales_20261116.csv,25,"TRANSACTION_ID=690010, LINE=2",SLS_QTY 3 -> -3 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-16,pos_sales_20261116.csv,16,"TRANSACTION_ID=690006, LINE=2",ITEM_ID 50009 -> 59994 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-16,pos_sales_20261116.csv,30 (copy of 31),"TRANSACTION_ID=690011, LINE=4","Row 30 replaced (was TRANSACTION_ID=690011, LINE=3) with exact copy of row 31","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-16,store_master_20261116.csv,4,LOCATION_ID=203,District 306/Bhaktapur -> 302/Lalitpur,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-17,pos_sales_20261117.csv,28,"TRANSACTION_ID=700013, LINE=1",ITEM_ID blanked (was 50010),Silver ID null check -> REJ_TABLE
+1,2026-11-17,pos_sales_20261117.csv,8,"TRANSACTION_ID=700004, LINE=1",ITEM_ID blanked (was 50007),Silver ID null check -> REJ_TABLE
+2,2026-11-17,pos_sales_20261117.csv,48,"TRANSACTION_ID=700022, LINE=2",SLS_QTY 3 -> -3 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-17,pos_sales_20261117.csv,41,"TRANSACTION_ID=700019, LINE=2",ITEM_ID 50020 -> 59995 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-17,pos_sales_20261117.csv,46 (copy of 36),"TRANSACTION_ID=700017, LINE=1","Row 46 replaced (was TRANSACTION_ID=700021, LINE=3) with exact copy of row 36","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-17,store_master_20261117.csv,4,LOCATION_ID=203,District 302/Lalitpur -> 301/Kathmandu,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-18,pos_sales_20261118.csv,32,"TRANSACTION_ID=710012, LINE=3",ITEM_ID blanked (was 50015),Silver ID null check -> REJ_TABLE
+1,2026-11-18,pos_sales_20261118.csv,27,"TRANSACTION_ID=710010, LINE=3",ITEM_ID blanked (was 50008),Silver ID null check -> REJ_TABLE
+2,2026-11-18,pos_sales_20261118.csv,36,"TRANSACTION_ID=710014, LINE=2",SLS_QTY 3 -> -3 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-18,pos_sales_20261118.csv,28,"TRANSACTION_ID=710011, LINE=1",ITEM_ID 50011 -> 59996 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-18,pos_sales_20261118.csv,42 (copy of 38),"TRANSACTION_ID=710015, LINE=1","Row 42 replaced (was TRANSACTION_ID=710017, LINE=1) with exact copy of row 38","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-18,store_master_20261118.csv,4,LOCATION_ID=203,District 301/Kathmandu -> 306/Bhaktapur,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-19,pos_sales_20261119.csv,24,"TRANSACTION_ID=720010, LINE=1",ITEM_ID blanked (was 50018),Silver ID null check -> REJ_TABLE
+1,2026-11-19,pos_sales_20261119.csv,5,"TRANSACTION_ID=720001, LINE=4",ITEM_ID blanked (was 50019),Silver ID null check -> REJ_TABLE
+2,2026-11-19,pos_sales_20261119.csv,16,"TRANSACTION_ID=720007, LINE=1",SLS_QTY 2 -> -2 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-19,pos_sales_20261119.csv,30,"TRANSACTION_ID=720012, LINE=2",ITEM_ID 50019 -> 59997 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-19,pos_sales_20261119.csv,15 (copy of 2),"TRANSACTION_ID=720001, LINE=1","Row 15 replaced (was TRANSACTION_ID=720006, LINE=2) with exact copy of row 2","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-19,store_master_20261119.csv,4,LOCATION_ID=203,District 306/Bhaktapur -> 302/Lalitpur,"DIM_LOCATION SCD2: previous version closed, new current version opened"
+1,2026-11-20,pos_sales_20261120.csv,4,"TRANSACTION_ID=730001, LINE=3",ITEM_ID blanked (was 50014),Silver ID null check -> REJ_TABLE
+1,2026-11-20,pos_sales_20261120.csv,40,"TRANSACTION_ID=730016, LINE=2",ITEM_ID blanked (was 50004),Silver ID null check -> REJ_TABLE
+2,2026-11-20,pos_sales_20261120.csv,13,"TRANSACTION_ID=730004, LINE=2",SLS_QTY 1 -> -1 (SLS_AMT left positive),Silver negative-quantity check -> REJ_TABLE
+3,2026-11-20,pos_sales_20261120.csv,21,"TRANSACTION_ID=730006, LINE=4",ITEM_ID 50020 -> 59998 (not in item_master),Passes Silver; Gold orphan-FK check fails
+4,2026-11-20,pos_sales_20261120.csv,49 (copy of 47),"TRANSACTION_ID=730019, LINE=2","Row 49 replaced (was TRANSACTION_ID=730020, LINE=1) with exact copy of row 47","Silver dedup keeps one copy, rejects duplicate"
+5,2026-11-20,store_master_20261120.csv,4,LOCATION_ID=203,District 302/Lalitpur -> 301/Kathmandu,"DIM_LOCATION SCD2: previous version closed, new current version opened"

@@ -1,0 +1,309 @@
+erDiagram
+    direction BT
+
+    %% ============================================================
+    %% FACT TERRITORY
+    %% ============================================================
+    subgraph FACTS["FACT TABLES"]
+        FCT_SALES {
+            INT SALES_KY PK "Surrogate key (assumed)"
+            INT DAY_KY FK "Grain: one row per day/item/location/customer"
+            INT ITEM_KY FK
+            INT LOCATION_KY FK
+            INT CUSTOMER_KY FK
+			INT TRANSACTION_ID 
+			INT TRANSACTION_LINE_NUMBER
+            NUMBER SLS_QTY "Measure"
+            NUMBER SLS_AMT "Measure"
+            TIMESTAMP REC_INS_TS "Maintenance"
+            TIMESTAMP REC_UPDT_TS "Maintenance"
+            VARCHAR SRC_SYS_CD "Maintenance"
+            VARCHAR BATCH_ID "Maintenance"
+        }
+
+        FCT_PRICE {
+            INT PRICE_KY PK "Surrogate key (assumed)"
+            INT DAY_KY FK "Positional grain: day/item/location"
+            INT ITEM_KY FK
+            INT LOCATION_KY FK
+            NUMBER UNIT_PRICE_AMT "Measure"
+            TIMESTAMP REC_INS_TS "Maintenance"
+            TIMESTAMP REC_UPDT_TS "Maintenance"
+            VARCHAR SRC_SYS_CD "Maintenance"
+            VARCHAR BATCH_ID "Maintenance"
+            DATE EFF_FROM_DATE "Maintenance"
+            DATE EFF_TO_DATE "Maintenance"
+        }
+
+        FCT_INVENTORY {
+            INT INVENTORY_KY PK "Surrogate key (assumed)"
+            INT DAY_KY FK "Positional grain: day/item/location"
+            INT ITEM_KY FK
+            INT LOCATION_KY FK
+            NUMBER STOCK_ON_HAND "Measure"
+            NUMBER IN_TRANSIT "Measure"
+            TIMESTAMP REC_INS_TS "Maintenance"
+            TIMESTAMP REC_UPDT_TS "Maintenance"
+            VARCHAR SRC_SYS_CD "Maintenance"
+            VARCHAR BATCH_ID "Maintenance"
+            DATE EFF_FROM_DATE "Maintenance"
+            DATE EFF_TO_DATE "Maintenance"
+        }
+
+        FCT_SALES_PER_WEEK {
+            INT SALES_WEEK_KY PK "Surrogate key (assumed)"
+            INT WEEK_KY FK "Aggregate grain: week/item/location/customer"
+            INT ITEM_KY FK
+            INT LOCATION_KY FK
+            INT CUSTOMER_KY FK
+            NUMBER SLS_QTY "Measure - additive"
+            NUMBER SLS_AMT "Measure - additive"
+            TIMESTAMP REC_INS_TS "Maintenance"
+            TIMESTAMP REC_UPDT_TS "Maintenance"
+            VARCHAR SRC_SYS_CD "Maintenance"
+            VARCHAR BATCH_ID "Maintenance"
+        }
+    end
+
+    DIM_DAY {
+        INT DAY_KY PK "Surrogate key"
+        INT DAY_ID UK "Business key YYYYMMDD"
+        DATE CALENDAR_DT "SCD1"
+        NUMBER DAY_OF_WEEK_NUMBER "SCD1"
+        NUMBER DAY_OF_MONTH_NUMBER "SCD1"
+        BOOLEAN WEEKEND_FLG "SCD1"
+        INT WEEK_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_WEEK {
+        INT WEEK_KY PK "Surrogate key"
+        INT WEEK_ID UK "Business key YYYYWW"
+        DATE WEEK_START_DT "SCD1"
+        DATE WEEK_END_DT "SCD1"
+        NUMBER WEEK_OF_YEAR_NUMBER "SCD1"
+        INT MONTH_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_MONTH {
+        INT MONTH_KY PK "Surrogate key"
+        INT MONTH_ID UK "Business key YYYYMM"
+        VARCHAR MONTH_NAME "SCD1"
+        NUMBER MONTH_NUMBER "SCD1"
+        NUMBER DAYS_IN_MONTH_NUMBER "SCD1"
+        INT QUARTER_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_QUARTER {
+        INT QUARTER_KY PK "Surrogate key"
+        INT QUARTER_ID UK "Business key YYYYQ"
+        NUMBER QUARTER_NUMBER "SCD1"
+        VARCHAR QUARTER_NAME "SCD1"
+        INT YEAR_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_YEAR {
+        INT YEAR_KY PK "Surrogate key"
+        INT YEAR_ID UK "Business key YYYY"
+        NUMBER CALENDAR_YEAR "SCD1"
+        BOOLEAN LEAP_YEAR_FLG "SCD1"
+        VARCHAR FISCAL_YEAR_LABEL "SCD1"
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+    %% ============================================================
+    %% ITEM HIERARCHY: Item -> Class -> Department -> Company
+    %% ============================================================
+    DIM_ITEM {
+        INT ITEM_KY PK "Surrogate key"
+        INT ITEM_ID UK "Business key"
+        VARCHAR ITEM_NAME "SCD2"
+        VARCHAR COLOR "SCD2"
+        VARCHAR SIZE "SCD2"
+        INT CLASS_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_CLASS {
+        INT CLASS_KY PK "Surrogate key"
+        INT CLASS_ID UK "Business key"
+        VARCHAR CLASS_NAME "SCD2"
+        VARCHAR CLASS_DESCRIPTION "SCD1"
+        INT DEPARTMENT_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_DEPARTMENT {
+        INT DEPARTMENT_KY PK "Surrogate key"
+        INT DEPARTMENT_ID UK "Business key"
+        VARCHAR DEPARTMENT_NAME "SCD2"
+        VARCHAR DEPARTMENT_MANAGER_NAME "SCD1"
+        INT COMPANY_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_COMPANY {
+        INT COMPANY_KY PK "Surrogate key"
+        INT COMPANY_ID UK "Business key"
+        VARCHAR COMPANY_NAME "SCD2"
+        VARCHAR COMPANY_TYPE "SCD1"
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    %% ============================================================
+    %% LOCATION HIERARCHY: Location -> District -> State
+    %% ============================================================
+    DIM_LOCATION {
+        INT LOCATION_KY PK "Surrogate key"
+        INT LOCATION_ID UK "Business key"
+        VARCHAR LOCATION_NAME "SCD2"
+        VARCHAR ADDRESS_LINE "SCD1"
+        INT DISTRICT_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_DISTRICT {
+        INT DISTRICT_KY PK "Surrogate key"
+        INT DISTRICT_ID UK "Business key"
+        VARCHAR DISTRICT_NAME "SCD1"
+        VARCHAR DISTRICT_CODE "SCD2"
+        INT STATE_KY FK
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    DIM_STATE {
+        INT STATE_KY PK "Surrogate key"
+        INT STATE_ID UK "Business key"
+        VARCHAR STATE_NAME "SCD1"
+        VARCHAR STATE_CODE "SCD2"
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    %% ============================================================
+    %% STANDALONE CUSTOMER DIMENSION
+    %% ============================================================
+    DIM_CUSTOMER {
+        INT CUSTOMER_KY PK "Surrogate key"
+        INT CUSTOMER_ID UK "Business key"
+        VARCHAR CUSTOMER_NAME "SCD1"
+        VARCHAR CUSTOMER_EMAIL "SCD1"
+        VARCHAR CUSTOMER_PHONE "SCD2"
+        TIMESTAMP REC_INS_TS "Maintenance"
+        TIMESTAMP REC_UPDT_TS "Maintenance"
+        VARCHAR SRC_SYS_CD "Maintenance"
+        VARCHAR BATCH_ID "Maintenance"
+        DATE EFF_FROM_DATE "Maintenance"
+        DATE EFF_TO_DATE "Maintenance"
+        BOOLEAN CURR_FLG "Maintenance"
+    }
+
+    %% ============================================================
+    %% RELATIONSHIPS - FACTS TO DIMENSIONS
+    %% ============================================================
+    FCT_SALES }o--|| DIM_DAY : "DAY_KY"
+    FCT_SALES }o--|| DIM_ITEM : "ITEM_KY"
+    FCT_SALES }o--|| DIM_LOCATION : "LOCATION_KY"
+    FCT_SALES }o--|| DIM_CUSTOMER : "CUSTOMER_KY"
+
+    FCT_PRICE }o--|| DIM_DAY : "DAY_KY"
+    FCT_PRICE }o--|| DIM_ITEM : "ITEM_KY"
+    FCT_PRICE }o--|| DIM_LOCATION : "LOCATION_KY"
+
+    FCT_INVENTORY }o--|| DIM_DAY : "DAY_KY"
+    FCT_INVENTORY }o--|| DIM_ITEM : "ITEM_KY"
+    FCT_INVENTORY }o--|| DIM_LOCATION : "LOCATION_KY"
+
+    FCT_SALES_PER_WEEK }o--|| DIM_WEEK : "WEEK_KY"
+    FCT_SALES_PER_WEEK }o--|| DIM_ITEM : "ITEM_KY"
+    FCT_SALES_PER_WEEK }o--|| DIM_LOCATION : "LOCATION_KY"
+    FCT_SALES_PER_WEEK }o--|| DIM_CUSTOMER : "CUSTOMER_KY"
+
+    %% ============================================================
+    %% RELATIONSHIPS - SNOWFLAKE HIERARCHIES
+    %% ============================================================
+    DIM_DAY }o--|| DIM_WEEK : "WEEK_KY"
+    DIM_WEEK }o--|| DIM_MONTH : "MONTH_KY"
+    DIM_MONTH }o--|| DIM_QUARTER : "QUARTER_KY"
+    DIM_QUARTER }o--|| DIM_YEAR : "YEAR_KY"
+
+
+    DIM_ITEM }o--|| DIM_CLASS : "CLASS_KY"
+    DIM_CLASS }o--|| DIM_DEPARTMENT : "DEPARTMENT_KY"
+    DIM_DEPARTMENT }o--|| DIM_COMPANY : "COMPANY_KY"
+
+    DIM_LOCATION }o--|| DIM_DISTRICT : "DISTRICT_KY"
+    DIM_DISTRICT }o--|| DIM_STATE : "STATE_KY"

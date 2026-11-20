@@ -1,0 +1,9 @@
+LOCATION_ID,LOCATION_NAME,ADDRESS_LINE,DISTRICT_ID,DISTRICT_NAME,DISTRICT_CODE,STATE_ID,STATE_NAME,STATE_CODE
+201,Himal Retail New Road,"New Road, Kathmandu",301,Kathmandu,KTM,401,Bagmati Province,BAG
+202,Himal Retail Thamel,"Thamel Marg, Kathmandu",301,Kathmandu,KTM,401,Bagmati Province,BAG
+203,Himal Retail Jawalakhel,"Jawalakhel Chowk, Lalitpur",302,Lalitpur,LTP,401,Bagmati Province,BAG
+204,Himal Retail Patan,"Mangalbazar, Lalitpur",302,Lalitpur,LTP,401,Bagmati Province,BAG
+205,Himal Retail Lakeside,"Lakeside Road, Pokhara",303,Kaski,KSK,402,Gandaki Province,GAN
+206,Himal Retail Prithvi Chowk,"Prithvi Chowk, Pokhara",303,Kaski,KSK,402,Gandaki Province,GAN
+207,Himal Retail Biratnagar,"Main Road, Biratnagar",304,Morang,MOR,403,Koshi Province,KOS
+208,Himal Retail Itahari,"Chowk Bazaar, Itahari",305,Sunsari,SUN,403,Koshi Province,KOS

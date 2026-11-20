@@ -1,0 +1,163 @@
+flowchart LR
+
+  %% ============ 1. SOURCE ============
+  subgraph SRC["1 · SOURCE"]
+    S1["item_master_yyyymmdd.csv"]
+    S2["pos_sales_yyyymmdd.csv"]
+    S3["store_master_yyyymmdd.csv"]
+    S4["inventory_master_yyyymmdd.csv"]
+    S5["price_master_yyyymmdd.csv"]
+  end
+
+  %% ============ 2. BRONZE ============
+  subgraph BRZ["2 · BRONZE"]
+    ARR{"All 5 files<br/>arrived?"}
+    RC1{"Rows > 0?"}
+    RC2{"Rows > 0?"}
+    RC3{"Rows > 0?"}
+    RC4{"Rows > 0?"}
+    RC5{"Rows > 0?"}
+    B1[("STG_itemmaster")]
+    B2[("STG_possales")]
+    B3[("STG_storemaster")]
+    B4[("STG_inventorymaster")]
+    B5[("STG_pricemaster")]
+  end
+
+  %% ============ 3. SILVER ============
+  subgraph SLV["3 · SILVER"]
+    V1{"DQ checks"}
+    V2{"DQ checks"}
+    V3{"DQ checks"}
+    V4{"DQ checks"}
+    V5{"DQ checks"}
+    T1[("TMP_itemmaster")]
+    T2[("TMP_possales")]
+    T3[("TMP_storemaster")]
+    T4[("TMP_inventorymaster")]
+    T5[("TMP_pricemaster")]
+    REJ[("REJ_TABLE")]
+  end
+
+  %% ============ 4. GOLD ============
+  subgraph GLD["4 · GOLD"]
+    LOAD["Gold load"]
+    DIM[("DIM tables")]
+    FCT[("FCT tables")]
+    GQ1{"Surrogate keys<br/>unique?"}
+    GQ2{"No orphaned or NULL<br/>mandatory FKs?"}
+    REC1{{"RECONCILIATION 1<br/>Bronze rows = Silver TMP + REJ<br/>e.g. STG_itemmaster =<br/>TMP_itemmaster + REJ itemmaster"}}
+    REC2{{"RECONCILIATION 2<br/>Total sales amount:<br/>Silver TMP = Gold FCT"}}
+    REC3{{"RECONCILIATION 3<br/>Each business key has<br/>exactly one current active version"}}
+    LOG[("Batch Log")]
+  end
+
+  %% ============ 5. MARTS ============
+  subgraph MRT["5 · MARTS"]
+    DASH["Dashboards"]
+  end
+
+  %% ---------- Source -> Bronze (file arrival + row count) ----------
+  S1 --> ARR
+  S2 --> ARR
+  S3 --> ARR
+  S4 --> ARR
+  S5 --> ARR
+  ARR -->|"Yes"| RC1
+  ARR -->|"Yes"| RC2
+  ARR -->|"Yes"| RC3
+  ARR -->|"Yes"| RC4
+  ARR -->|"Yes"| RC5
+  RC1 -->|"Yes: ingest"| B1
+  RC2 -->|"Yes: ingest"| B2
+  RC3 -->|"Yes: ingest"| B3
+  RC4 -->|"Yes: ingest"| B4
+  RC5 -->|"Yes: ingest"| B5
+  ARR -.->|"No: wait until timeout,<br/>then stop process"| ARR
+  RC1 -.->|"No: fail load"| RC1
+  RC2 -.->|"No: fail load"| RC2
+  RC3 -.->|"No: fail load"| RC3
+  RC4 -.->|"No: fail load"| RC4
+  RC5 -.->|"No: fail load"| RC5
+
+  %% ---------- Bronze -> Silver ----------
+  B1 --> V1
+  B2 --> V2
+  B3 --> V3
+  B4 --> V4
+  B5 --> V5
+  V1 -->|"valid"| T1
+  V2 -->|"valid"| T2
+  V3 -->|"valid"| T3
+  V4 -->|"valid"| T4
+  V5 -->|"valid"| T5
+  V1 -.->|"missing business key<br/>typecast failure<br/>_ID is NULL"| REJ
+  V2 -.->|"missing business key<br/>typecast failure<br/>_ID is NULL<br/>negative sales amount<br/>negative sales quantity"| REJ
+  V3 -.->|"missing business key<br/>typecast failure<br/>_ID is NULL"| REJ
+  V4 -.->|"missing business key<br/>typecast failure<br/>_ID is NULL"| REJ
+  V5 -.->|"missing business key<br/>typecast failure<br/>_ID is NULL"| REJ
+
+  %% ---------- Silver -> Gold ----------
+  T1 --> LOAD
+  T2 --> LOAD
+  T3 --> LOAD
+  T4 --> LOAD
+  T5 --> LOAD
+  LOAD --> DIM
+  DIM -->|"1 : N"| FCT
+
+  %% ---------- Gold data quality checks ----------
+  DIM --> GQ1
+  FCT --> GQ2
+
+  %% ---------- Gold reconciliation checks ----------
+  LOAD -.-> REC1
+  FCT -.-> REC2
+  DIM -.-> REC3
+
+  %% ---------- Gold failures -> batch log ----------
+  GQ1 -.->|"fail"| LOG
+  GQ2 -.->|"fail"| LOG
+  REC1 -.->|"mismatch"| LOG
+  REC2 -.->|"mismatch"| LOG
+  REC3 -.->|"violation"| LOG
+
+  %% ---------- Gold -> Marts ----------
+  FCT ==>|"reporting data"| DASH
+
+  %% ============ STYLES ============
+  classDef file fill:#FFFFFF,stroke:#1565C0,color:#0D2A4D
+  classDef bronzeTbl fill:#FFFFFF,stroke:#A1662F,color:#4A2E12
+  classDef silverTbl fill:#FFFFFF,stroke:#546E7A,color:#263238
+  classDef goldTbl fill:#FFFFFF,stroke:#B8860B,color:#4D3A00
+  classDef check fill:#FFFDE7,stroke:#F9A825,color:#333333
+  classDef recon fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#38006B
+  classDef reject fill:#FFEBEE,stroke:#C62828,stroke-width:2px,color:#7F0000
+  classDef logTbl fill:#FFEBEE,stroke:#C62828,stroke-width:2px,color:#7F0000
+  classDef mart fill:#FFFFFF,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+
+  class S1,S2,S3,S4,S5 file
+  class B1,B2,B3,B4,B5 bronzeTbl
+  class T1,T2,T3,T4,T5 silverTbl
+  class DIM,FCT,LOAD goldTbl
+  class ARR,RC1,RC2,RC3,RC4,RC5,V1,V2,V3,V4,V5,GQ1,GQ2 check
+  class REC1,REC2,REC3 recon
+  class REJ reject
+  class LOG logTbl
+  class DASH mart
+
+  style SRC fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+  style BRZ fill:#F6E7D8,stroke:#A1662F,stroke-width:2px
+  style SLV fill:#ECEFF1,stroke:#546E7A,stroke-width:2px
+  style GLD fill:#FFF8E1,stroke:#B8860B,stroke-width:2px
+  style MRT fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+
+  %% Success paths: green
+  linkStyle 5,6,7,8,9,10,11,12,13,14 stroke:#2E7D32,stroke-width:2px
+  linkStyle 26,27,28,29,30 stroke:#2E7D32,stroke-width:2px
+  %% Failure paths: dashed red (Bronze load failures, Silver quarantine, Gold batch-log errors)
+  linkStyle 15,16,17,18,19,20 stroke:#C62828,stroke-width:2px,stroke-dasharray:5 3
+  linkStyle 31,32,33,34,35 stroke:#C62828,stroke-width:2px,stroke-dasharray:5 3
+  linkStyle 48,49,50,51,52 stroke:#C62828,stroke-width:2px,stroke-dasharray:5 3
+  %% Reconciliation feeds: purple
+  linkStyle 45,46,47 stroke:#7B1FA2,stroke-width:2px,stroke-dasharray:2 3
