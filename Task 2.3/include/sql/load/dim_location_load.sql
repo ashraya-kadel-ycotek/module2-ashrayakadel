@@ -39,7 +39,15 @@ FROM ranked r
 JOIN gold.DIM_DISTRICT d
   ON d.DISTRICT_ID = r.DISTRICT_ID
  AND d.CURR_FLG    = TRUE
-WHERE r.RN = 1;
+WHERE r.RN = 1
+  -- Stale-batch guard: skip any location whose target history already
+  -- contains a version effective AFTER this batch date.
+  AND NOT EXISTS (
+        SELECT 1
+        FROM gold.DIM_LOCATION t
+        WHERE t.LOCATION_ID    = r.LOCATION_ID
+          AND t.EFF_FROM_DATE  > DATE '{{ ds }}'
+  );
 
 -- ----------------------------------------------------------------------------
 -- 2. SCD2 close-out — close current rows whose LOCATION_NAME (or parent) changed.
